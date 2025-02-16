@@ -1,8 +1,12 @@
 import { HiUser } from 'react-icons/hi';
 import { HiPhone } from 'react-icons/hi';
 import s from './Contact.module.css';
+import { useDispatch } from 'react-redux';
+import { deleteContact } from '../../redux/contactsSlice';
 
-const Contact = ({ name, number, id, onDelete }) => {
+const Contact = ({ name, number, id }) => {
+  const dispatch = useDispatch();
+
   return (
     <li className={s.item}>
       <div className={s.contact}>
@@ -14,7 +18,7 @@ const Contact = ({ name, number, id, onDelete }) => {
         </p>
       </div>
       <div className={s.btnWrap}>
-        <button className={s.btn} onClick={() => onDelete(id)}>
+        <button className={s.btn} onClick={() => dispatch(deleteContact(id))}>
           Delete
         </button>
       </div>

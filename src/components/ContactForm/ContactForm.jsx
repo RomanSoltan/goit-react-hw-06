@@ -3,13 +3,17 @@ import s from './ContactForm.module.css';
 import { useId } from 'react';
 import { nanoid } from 'nanoid';
 import * as Yup from 'yup';
+import { useDispatch } from 'react-redux';
+import { addContact } from '../../redux/contactsSlice';
 
-const ContactForm = ({ onAdd }) => {
+const ContactForm = () => {
   const initialValues = {
     id: '',
     name: '',
     number: '',
   };
+
+  const dispatch = useDispatch();
 
   const onlyLetters = /^[A-Za-zА-Яа-яЄєІіЇїҐґ-\s]+$/;
   const PatternPhone = /^(\d{3}-\d{2}-\d{2}|\d{7})$/;
@@ -31,13 +35,14 @@ const ContactForm = ({ onAdd }) => {
       ),
   });
 
-  const handleSubmit = (values, actions) => {
-    onAdd({
+  const handleSubmit = (values, options) => {
+    const newContact = {
       id: nanoid(),
       name: values.name,
       number: values.number,
-    });
-    actions.resetForm();
+    };
+    dispatch(addContact(newContact));
+    options.resetForm();
   };
 
   return (
