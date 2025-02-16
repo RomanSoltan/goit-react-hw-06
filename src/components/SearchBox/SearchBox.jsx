@@ -4,37 +4,31 @@ import { changeFilter } from '../../redux/filtersSlice';
 import { useState } from 'react';
 
 const SearchBox = () => {
-  const [value, setValue] = useState('');
   const [error, setError] = useState('');
   const dispatch = useDispatch();
 
-  const handleChange = e => {
-    const newValue = e.target.value.trim();
-    setValue(newValue);
-    setError('');
+  const handleInputChange = e => {
+    const value = e.target.value.trim();
+
+    if (value === '') {
+      setError('Please enter a search term');
+    } else {
+      setError('');
+    }
+
+    dispatch(changeFilter(value));
   };
 
-  const handleSubmit = e => {
-    e.preventDefault();
-    if (value === '') {
-      setError('Field cannot be empty');
-    } else {
-      dispatch(changeFilter(value));
-    }
-  };
   return (
     <div className={s.wrap}>
       <p className={s.descr}>Find contacts by name</p>
-      <form onSubmit={handleSubmit}>
-        <input
-          className={s.input}
-          type="text"
-          placeholder="Search..."
-          value={value}
-          onChange={handleChange}
-        />
-      </form>
-      {error && <p className={s.error}>{error}</p>}
+      <input
+        className={s.input}
+        type="text"
+        placeholder="Search..."
+        onChange={handleInputChange}
+      />
+      {error && <p className={s.error}>{error}</p>}{' '}
     </div>
   );
 };
